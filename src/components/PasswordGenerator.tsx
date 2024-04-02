@@ -86,10 +86,10 @@ const PasswordGenerator: React.FC = () =>{ // hago la funcion que incluye estado
           />
           Incluir números
         </label>
-        <div className="flex">
+        <div className="flex justify-between">
           <button
           onClick={handleGenerarPassword}
-          className="bg-pink-400 hover:bg-pink-300 duration-500 text-white px-4 md:py-2 rounded mr-16"
+          className="bg-pink-400 hover:bg-pink-300 duration-500 text-white px-4 py-2 rounded mr-3"
         >
           Generar contraseña
         </button>
