@@ -1,40 +1,45 @@
 import React, { useState } from "react";
 
-const generadorPassword = (longitud: number,incluirSimbolos: boolean): string => {
+interface PasswordOptions{
+  longitud: number
+  incluirSimbolos: boolean
+  incluirMayusculas: boolean
+  incluirNumeros: boolean
+}
+
+const generadorPassword = (opciones:PasswordOptions) : string =>{
+  const {longitud, incluirSimbolos,incluirMayusculas,incluirNumeros} = opciones
   const letrasMayusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const letrasMinusculas = "abcdefghijklmnopqrstuvwxyz";
   const numeros = "0123456789";
   const simbolos = "!@#$%^&*()-_+=";
 
-  let caracteres = letrasMayusculas + letrasMinusculas + numeros;
-  if (incluirSimbolos) {
-    caracteres += simbolos;
-  }
-
+  const caracteres = letrasMinusculas + (incluirSimbolos ? simbolos : "") + (incluirMayusculas ? letrasMayusculas : "") + (incluirNumeros ? numeros : "");
   let password = "";
-  for (let i = 0; i < longitud; i++) {
+
+  for(let i=0; i< longitud; i++){
     const randomIndex = Math.floor(Math.random() * caracteres.length);
     password += caracteres[randomIndex];
   }
-
-  return password;
+  return password
 };
 
-const PasswordGenerator: React.FC = () => {
+const PasswordGenerator: React.FC = () =>{
   const [passwordLongitud, setPasswordLongitud] = useState(6);
-  const [incluyeSimbolos, setIncluyeSimbolos] = useState(false);
-  const [password, setPassword] = useState("");
+  const [incluyeSimbolos, setIncluyeSimbolos] = useState(false)
+  const [incluyeMayusculas, setIncluyeMayusculas] = useState(false)
+  const [incluyeNumeros, setIncluyeNumeros] = useState(false)
+  const [password, setPassword] = useState("")
 
-  const handleGenerarPassword = () => {
-    const nuevaPassword = generadorPassword(passwordLongitud, incluyeSimbolos);
+  const handleGenerarPassword = () =>{
+    const nuevaPassword = generadorPassword({longitud:passwordLongitud, incluirSimbolos:incluyeSimbolos, incluirMayusculas:incluyeMayusculas,incluirNumeros:incluyeNumeros})
     setPassword(nuevaPassword);
-  };
+  }
 
-  const handleCopiarPortapapeles = () => {
+  const handleCopiarPortapapeles = ()=>{
     navigator.clipboard.writeText(password);
     alert("Contraseña copiada con éxito al portapapeles");
-  };
-
+  }
   return (
     <div className="flex justify-center items-center h-screen bg-gradient-to-t from-cyan-500 to-blue-500">
       <div className=" bg-blue-300 p-5 rounded-md">
@@ -51,7 +56,7 @@ const PasswordGenerator: React.FC = () => {
             className="ml-2 p-2 border border-blue-600 rounded"
           />
         </label>
-        <label className="block mb-4">
+        <label className="block mb-4 ">
           <input
             id="simbolos"
             type="checkbox"
@@ -61,16 +66,36 @@ const PasswordGenerator: React.FC = () => {
           />
           Incluir símbolos
         </label>
+        <label className="block mb-4 ">
+          <input
+            id="mayusculas"
+            type="checkbox"
+            checked={incluyeMayusculas}
+            onChange={(e) => setIncluyeMayusculas(e.target.checked)}
+            className="mr-2"
+          />
+          Incluir mayusculas
+        </label>
+        <label className="block mb-4 ">
+          <input
+            id="numeros"
+            type="checkbox"
+            checked={incluyeNumeros}
+            onChange={(e) => setIncluyeNumeros(e.target.checked)}
+            className="mr-2"
+          />
+          Incluir numeros
+        </label>
         <button
           onClick={handleGenerarPassword}
-          className="bg-pink-400 text-white px-4 py-2 rounded mr-16"
+          className="bg-pink-400 hover:bg-pink-300 duration-500 text-white px-4 py-2 rounded mr-16"
         >
           Generar contraseña
         </button>
         <button
           onClick={handleCopiarPortapapeles}
           disabled={!password}
-          className="bg-cyan-600 text-white px-4 py-2 rounded"
+          className="bg-cyan-600 hover:bg-cyan-500 duration-500 text-white px-4 py-2 rounded"
         >
           Copiar contraseña
         </button>
