@@ -74,7 +74,7 @@ const PasswordGenerator: React.FC = () =>{
             onChange={(e) => setIncluyeMayusculas(e.target.checked)}
             className="mr-2"
           />
-          Incluir mayusculas
+          Incluir Mayúsculas
         </label>
         <label className="block mb-4 ">
           <input
@@ -84,7 +84,7 @@ const PasswordGenerator: React.FC = () =>{
             onChange={(e) => setIncluyeNumeros(e.target.checked)}
             className="mr-2"
           />
-          Incluir numeros
+          Incluir números
         </label>
         <button
           onClick={handleGenerarPassword}
